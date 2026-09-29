@@ -55,7 +55,7 @@
 ## 5. Tracing và prompt versioning
 
 - **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** `.env` có key pair; Langfuse API xác nhận 12 traces trong project đang được key sử dụng. Langfuse UI xác nhận tên project là `day13-k4-l3a-2A202602628`; trace list và prompt UI screenshots nằm trong `evidence/06`–`10`.
-- **Cấu trúc root/retrieval/generation observations:** Đã kiểm tra waterfall live: `lab-agent-run` có hai child `knowledge-retrieval` và `chat-completion`. Root input/output không được capture; child input/output đã rà PII với 0 mẫu khớp email/điện thoại/CCCD/thẻ.
+- **Cấu trúc root/retrieval/generation observations:** Waterfall live có root `lab-agent-run` và hai child `knowledge-retrieval`, `chat-completion`. Root bật `capture_input=False` và `capture_output=False` để không lưu nội dung user; vì vậy UI có thể hiện `null`/`undefined` ở root. Ảnh waterfall chọn generation child, nơi Langfuse ghi model, prompt version, token và cost. Child input/output đã rà PII với 0 mẫu khớp email/điện thoại/CCCD/thẻ.
 - **Cách nối trace với log:** Correlation ID cùng feature/model xuất hiện trong metadata trace và structured log; session ID được hash trước khi gắn vào trace. Bảng ID nằm trong `evidence/06-langfuse-traces.txt`.
 - **Prompt name:** `day13-chat`, đọc thành công từ Langfuse project.
 - **Version/label baseline:** Version 1 có `baseline` và `production`.
@@ -76,7 +76,7 @@
 - **Khoảng thời gian điều tra:** Chưa chạy challenge.
 - **Triệu chứng từ metrics:** Chưa có.
 - **Log line và correlation ID liên quan:** Chưa có.
-- **Trace ID và span gây ảnh hưởng:** Chưa có; chờ challenge chính thức và cần key project Langfuse cá nhân để tạo trace.
+- **Trace ID và span gây ảnh hưởng:** Chưa có trace của incident CP3. Practice trace `495ff70c5d9022c308994594aba415e1` (`req-d29158f8`, generation `chat-completion`) chỉ làm evidence tracing/prompt, không thay thế challenge.
 - **Root cause:** Chưa kết luận.
 - **Fix action:** Chưa kết luận.
 - **Preventive measure:** Chưa kết luận.
@@ -89,7 +89,7 @@
 - **Cách hiểu luồng Metrics → Logs → Traces:** Metrics khoanh triệu chứng và thời gian; `correlation_id` tìm request trong log; trace của cùng ID chỉ ra span gây chậm/lỗi.
 - **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:** Trace phân biệt được prompt version 1/2 và correlation ID; token/cost được ghi theo generation. Rollback production về version 1 đã được đọc lại từ API.
 - **Điều quan trọng nhất đã học:** Tracing phải vừa nối được với log vừa tránh capture nội dung user; prompt label có thể promote/rollback độc lập với code và cần có trace xác nhận version thực dùng.
-- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** CP3 incident challenge chưa chạy vì repository hướng dẫn chỉ chạy challenge sau khi nhận file `config/challenge.json` riêng cho lớp từ Lab Coach; không tự tạo hoặc dùng file lớp khác. Langfuse UI screenshots đã lưu trong `evidence/06`–`10`. Số liệu dashboard hiện tại chỉ từ fake LLM practice.
+- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** CP3 incident challenge chưa chạy vì repository hướng dẫn yêu cầu file `config/challenge.json` riêng cho lớp từ Lab Coach; file hiện chưa có và không được tự tạo hoặc lấy từ lớp khác. Langfuse UI screenshots đã lưu trong `evidence/06`–`10`. Số liệu dashboard hiện tại chỉ từ fake LLM practice.
 
 ## 9. Checklist trước khi nộp
 

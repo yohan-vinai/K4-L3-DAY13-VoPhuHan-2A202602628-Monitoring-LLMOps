@@ -29,7 +29,7 @@ request-id-headers.txt
 ```text
 06-trace-list.jpg (12 root traces; project name visible)
 07-trace-waterfall.jpg (root + retrieval + generation)
-08-trace-metadata.jpg (correlation ID and generation metadata; crop excludes public key)
+08-trace-metadata.jpg (correlation ID, prompt version/label, token and cost; crop excludes public key)
 09-prompt-versions.jpg (v1 baseline/production and v2 candidate/latest)
 10-prompt-rollback.jpg (v1 selected with production label; v2 retains candidate/latest)
 12-incident-metric.png

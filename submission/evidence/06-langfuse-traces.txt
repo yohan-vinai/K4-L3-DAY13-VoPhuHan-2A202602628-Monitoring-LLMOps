@@ -1,0 +1,28 @@
+Langfuse API verification (API keys omitted)
+Project: My Project (cmumds53i1563ad0c57povhmp)
+Prompt: day13-chat (text)
+Version 1 labels: baseline, production
+Version 2 labels: candidate, latest
+Current production resolves to version: 1
+Root traces in this workload window: 12
+Observations per trace: lab-agent-run -> knowledge-retrieval + chat-completion
+Root input/output captured: no (12/12)
+Raw PII patterns in stored observation input/output: 0
+Trace ID | correlation_id | prompt_label | prompt_version | observation_count
+4a920c2e6a145b76e25af31299206683 | req-eb6e87ef | production | 1 | 3
+2ef0895568b36713101fc9dace7d7d4e | req-04216c25 | production | 1 | 3
+bb751d102b91156ebc52c8b3803f1591 | req-a5786b9c | production | 1 | 3
+abc8f80f73b18b0446ebc896eab92cf6 | req-52abb0e6 | production | 1 | 3
+a6b5b7d44d26c54362bb606db57b6196 | req-6586e4d3 | production | 1 | 3
+6ad6ccc02cc62b85fb4d419b4fe0932b | req-40265d9e | production | 1 | 3
+d27f9aeb1f0c4af335e9369fa9ed444b | req-20c726a9 | production | 1 | 3
+dbd51968ce7fc0e89dc519725e9816b4 | req-4d48a2e6 | production | 1 | 3
+bb6615db4af652835f992bbc948fae95 | req-7127bbdf | production | 1 | 3
+6fd05559adc151b0019d17307df46b19 | req-e60cb59c | production | 1 | 3
+f5f618d9911223bd5597c8e2100b64ce | req-4e98fccd | production | 2 | 3
+495ff70c5d9022c308994594aba415e1 | req-d29158f8 | candidate | 2 | 3
+
+Production promotion verification: version 2 resolved during request on trace f5f618d9911223bd5597c8e2100b64ce with correlation_id req-4e98fccd.
+Candidate label verification: version 2 resolved on trace 495ff70c5d9022c308994594aba415e1 with correlation_id req-d29158f8.
+Rollback verification: production now resolves to version 1; version 1 retains labels baseline, production.
+PII scan used common email, VN phone, CCCD and payment-card patterns; only counts are recorded here.

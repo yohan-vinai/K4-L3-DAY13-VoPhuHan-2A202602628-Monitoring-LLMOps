@@ -10,22 +10,23 @@ Evidence local hiện có:
 03-dashboard-validator.txt
 04-structured-log.txt
 05-pii-redaction.txt
+06-langfuse-traces.txt
 11-dashboard-overview.png
 11-dashboard-runtime.json
 practice-load-test.txt
 request-id-headers.txt
 ```
 
-Trace và prompt-version/rollback evidence cần project/key Langfuse cá nhân do học viên tự tạo; không cần chờ Lab Coach cấp key. Incident evidence cần challenge release đúng lớp tại CP3. Dashboard JSON và ảnh phản ánh cùng một mock practice snapshot gồm 23 requests (2026-09-29 10:35 +07); load-test text và validators là lần chạy local sau đó.
+`06-langfuse-traces.txt` là readback từ project Langfuse đang được key trong `.env` sử dụng: có trace IDs, correlation IDs, observation hierarchy, prompt labels/versions, kiểm tra PII và rollback. Không lưu hay in key. Incident evidence cần challenge release đúng lớp tại CP3. Dashboard JSON và ảnh phản ánh cùng một mock practice snapshot gồm 23 requests; load-test text và validators là các lần chạy local sau đó.
 
 Các file chờ thu thập sau:
 
 ```text
-06-trace-list.png
-07-trace-waterfall.png
-08-trace-metadata.png
-09-prompt-versions.png
-10-prompt-rollback.png
+06-trace-list.png (UI screenshot pending; API proof in `06-langfuse-traces.txt`)
+07-trace-waterfall.png (UI screenshot pending; API proof in `06-langfuse-traces.txt`)
+08-trace-metadata.png (UI screenshot pending; API proof in `06-langfuse-traces.txt`)
+09-prompt-versions.png (UI screenshot pending; API proof in `06-langfuse-traces.txt`)
+10-prompt-rollback.png (UI screenshot pending; API proof in `06-langfuse-traces.txt`)
 12-incident-metric.png
 13-incident-log.png
 14-incident-trace.png

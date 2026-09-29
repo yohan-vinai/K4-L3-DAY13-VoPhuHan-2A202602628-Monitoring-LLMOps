@@ -8,7 +8,7 @@
 - **MSSV:** 2A202602628
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/yohan-vinai/K4-L3A-Day13-Monitoring-LLMOps
-- **Commit SHA cuối:** Chưa chốt; xem commit cuối trên repository sau khi hoàn tất Langfuse/CP3
+- **Commit SHA cuối:** Xem `HEAD` của repository cá nhân sau khi push (SHA không thể tự ghi trong chính commit đó vì nội dung thay đổi sẽ sinh SHA mới)
 - **Challenge ID:** Chờ Lab Coach release challenge riêng cho K4-L3A tại CP3
 
 ## 2. Evidence index
@@ -22,11 +22,7 @@
 | Dashboard validator | `evidence/03-dashboard-validator.txt` |
 | Structured log | `evidence/04-structured-log.txt` |
 | PII redaction | `evidence/05-pii-redaction.txt` |
-| Trace list | Chưa tạo; tự tạo project/key Langfuse cá nhân theo `docs/SETUP.md` rồi chạy workload |
-| Trace waterfall | Chưa có; cần traces trong project Langfuse cá nhân |
-| Trace metadata | Chưa có; cần traces trong project Langfuse cá nhân |
-| Prompt versions | Chưa tạo; thực hiện trong project Langfuse cá nhân |
-| Prompt rollback | Chưa thực hiện; thực hiện trong project Langfuse cá nhân |
+| Trace list, waterfall, metadata, correlation IDs, prompt versions/rollback | `evidence/06-langfuse-traces.txt` (Langfuse API readback; UI screenshots cần chụp riêng) |
 | Dashboard runtime | `evidence/11-dashboard-overview.png` |
 | Incident metric | Chờ challenge release của Lab Coach |
 | Incident log | Chờ challenge release của Lab Coach |
@@ -36,10 +32,10 @@
 
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
-| `validate_logs.py` | Chưa đo trước khi sửa | 100/100 | 25 bản ghi, 12 correlation IDs; không thiếu metadata, không phát hiện PII |
+| `validate_logs.py` | Chưa đo trước khi sửa | 100/100 | 52 bản ghi, 24 correlation IDs; không thiếu metadata, không phát hiện PII |
 | `validate_dashboard.py` | Chưa đo trước khi sửa | 6/6 panel | Dashboard contract hợp lệ; runtime JSON và screenshot được lưu |
 | `pytest` | Chưa đo trước khi sửa | 26 passed | Chạy local trên commit hiện tại |
-| Số traces hợp lệ | Chưa có | 0 | Chưa tự tạo project/key Langfuse cá nhân; app đang tracing-disabled vì hai key trong `.env` đang trống |
+| Số traces hợp lệ | Chưa có | 12 | Langfuse Cloud API xác nhận 12 root trace, mỗi trace có retrieval/generation child observations |
 | Số PII leak | Chưa đo trước khi sửa | 0 | Validator không phát hiện PII trong log hiện tại |
 | Latency P95 / TTFT P95 | Chưa đo trước khi sửa | 162 ms / 55 ms | Mock practice snapshot với 23 requests; xem dashboard runtime JSON/screenshot |
 | Retrieval success rate | Chưa đo trước khi sửa | 100% | Mock practice workload; không đại diện dịch vụ thật |
@@ -53,14 +49,14 @@
 
 ## 5. Tracing và prompt versioning
 
-- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** Chưa có trace; hai key trong `.env` đang trống. Hướng dẫn yêu cầu mỗi học viên tự tạo project và key, không cần chờ Lab Coach.
-- **Cấu trúc root/retrieval/generation observations:** Đã thêm child observation cho retriever và generation; test xác nhận cấu trúc, model, prompt reference, token usage và cost. Input/output không ghi raw prompt/answer. Chưa xác minh waterfall live vì chưa cấu hình key project cá nhân.
-- **Cách nối trace với log:** Root trace metadata nhận correlation ID cùng feature/model; session ID được hash trước khi gắn vào trace.
-- **Prompt name:** `day13-chat` (cấu hình mặc định; chưa xác minh trên Langfuse project).
-- **Version/label baseline:** Chưa tạo trên Langfuse.
-- **Version/label candidate:** Chưa tạo trên Langfuse.
-- **Trace ID của mỗi version:** Chưa có.
-- **Cách promote và rollback `production`:** Chưa thực hiện; có thể làm sau khi tự tạo project Langfuse cá nhân và cấu hình API key riêng.
+- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** `.env` có key pair; Langfuse API xác nhận 12 traces trong project đang được key sử dụng. Project hiện có tên `My Project`; nên đổi tên trong Langfuse UI thành `day13-k4-l3a-2A202602628` theo quy ước của lab.
+- **Cấu trúc root/retrieval/generation observations:** Đã kiểm tra waterfall live: `lab-agent-run` có hai child `knowledge-retrieval` và `chat-completion`. Root input/output không được capture; child input/output đã rà PII với 0 mẫu khớp email/điện thoại/CCCD/thẻ.
+- **Cách nối trace với log:** Correlation ID cùng feature/model xuất hiện trong metadata trace và structured log; session ID được hash trước khi gắn vào trace. Bảng ID nằm trong `evidence/06-langfuse-traces.txt`.
+- **Prompt name:** `day13-chat`, đọc thành công từ Langfuse project.
+- **Version/label baseline:** Version 1 có `baseline` và `production`.
+- **Version/label candidate:** Version 2 có `candidate`; đã tạo trace chọn label `candidate`.
+- **Trace ID của mỗi version:** Có trace version 1 và version 2 trong `evidence/06-langfuse-traces.txt`; trace version 2 cũng ghi nhận lúc production được promote.
+- **Cách promote và rollback `production`:** Chuyển `production` từ version 1 sang version 2, gửi request và đọc lại trace ghi prompt version 2; sau đó gắn `production` lại version 1 và API xác nhận production hiện resolve về version 1.
 
 ## 6. Dashboard, SLO và alerts
 
@@ -71,7 +67,7 @@
 
 ## 7. Điều tra challenge
 
-- **Challenge ID:** Chờ Lab Coach xác nhận challenge K4-L3A đã release.
+- **Challenge ID:** Chờ Lab Coach release challenge riêng K4-L3A; `config/challenge.json` hiện chưa có.
 - **Khoảng thời gian điều tra:** Chưa chạy challenge.
 - **Triệu chứng từ metrics:** Chưa có.
 - **Log line và correlation ID liên quan:** Chưa có.
@@ -83,19 +79,19 @@
 ## 8. Giải thích và tự đánh giá
 
 - **Một quyết định kỹ thuật quan trọng và lý do:** Dashboard lấy `data/logs.jsonl` làm nguồn chính theo contract; PII scrub chạy trước file writer để giữ an toàn cho cả file lẫn console.
-- **Một lỗi/blocker đã gặp:** File `.env` có Langfuse keys rỗng khiến SDK khởi tạo exporter và trả 401.
-- **Cách tìm nguyên nhân và xử lý:** Kiểm tra trạng thái key theo dạng có/không, đối chiếu hành vi Langfuse SDK v4, rồi đặt client no-op khi thiếu credentials. Chạy lại API: không còn request export; health báo tracing disabled.
+- **Một lỗi/blocker đã gặp:** Ban đầu hai Langfuse key rỗng làm SDK export thất bại; đã xử lý no-op khi thiếu credential. Sau khi a tự tạo và nạp key, tracing được bật và trace live đã xác nhận.
+- **Cách tìm nguyên nhân và xử lý:** Kiểm tra key chỉ ở dạng có/không, không in secret; chạy API riêng ở cổng 8001, xác nhận health báo tracing enabled rồi đọc observations và prompt versions từ đúng project.
 - **Cách hiểu luồng Metrics → Logs → Traces:** Metrics khoanh triệu chứng và thời gian; `correlation_id` tìm request trong log; trace của cùng ID chỉ ra span gây chậm/lỗi.
-- **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:** Chưa có evidence runtime cho prompt/rollback; phần config đã giữ lại correlation giữa version, usage/cost và request để truy nguyên khi Langfuse sẵn sàng.
-- **Điều quan trọng nhất đã học:** Chưa điền; học viên tự hoàn thiện sau khi làm challenge và demo.
-- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** Cần tự tạo Langfuse project/key để thu trace và prompt evidence; CP3 chờ Lab Coach release challenge riêng. Số liệu dashboard hiện tại chỉ từ fake LLM practice.
+- **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:** Trace phân biệt được prompt version 1/2 và correlation ID; token/cost được ghi theo generation. Rollback production về version 1 đã được đọc lại từ API.
+- **Điều quan trọng nhất đã học:** Tracing phải vừa nối được với log vừa tránh capture nội dung user; prompt label có thể promote/rollback độc lập với code và cần có trace xác nhận version thực dùng.
+- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** CP3 chưa thể chạy vì challenge chính thức đúng lớp chưa release. Cần chụp các ảnh UI Langfuse theo rubric; API evidence hiện có trong `evidence/06-langfuse-traces.txt`. Số liệu dashboard hiện tại chỉ từ fake LLM practice.
 
 ## 9. Checklist trước khi nộp
 
 - [ ] Kết quả và evidence thuộc commit SHA cuối.
 - [ ] Tất cả ảnh/output mở được bằng đường dẫn tương đối.
-- [ ] Incident evidence nối đúng metric → log → trace.
-- [ ] Trace/prompt evidence thuộc project Langfuse cá nhân và ảnh không lộ key/secret.
+- [ ] Incident evidence nối đúng metric → log → trace (chờ challenge CP3).
+- [ ] Trace/prompt evidence thuộc project Langfuse cá nhân; API evidence đã lưu, UI screenshots còn thiếu và phải không lộ key/secret.
 - [ ] Repository chạy lại được theo README.
 - [ ] Không có secret, API key, PII thô hoặc evidence của người khác/lớp khác.
 - [ ] URL repo và commit SHA cuối đã được nộp trên LMS/Codelabs.

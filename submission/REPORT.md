@@ -22,27 +22,27 @@
 | Dashboard validator | `evidence/03-dashboard-validator.txt` |
 | Structured log | `evidence/04-structured-log.txt` |
 | PII redaction | `evidence/05-pii-redaction.txt` |
-| Trace list | Chờ Langfuse credentials |
-| Trace waterfall | Chờ Langfuse credentials |
-| Trace metadata | Chờ Langfuse credentials |
-| Prompt versions | Chờ Langfuse credentials |
-| Prompt rollback | Chờ Langfuse credentials |
+| Trace list | Chưa tạo; tự tạo project/key Langfuse cá nhân theo `docs/SETUP.md` rồi chạy workload |
+| Trace waterfall | Chưa có; cần traces trong project Langfuse cá nhân |
+| Trace metadata | Chưa có; cần traces trong project Langfuse cá nhân |
+| Prompt versions | Chưa tạo; thực hiện trong project Langfuse cá nhân |
+| Prompt rollback | Chưa thực hiện; thực hiện trong project Langfuse cá nhân |
 | Dashboard runtime | `evidence/11-dashboard-overview.png` |
 | Incident metric | Chờ challenge release của Lab Coach |
 | Incident log | Chờ challenge release của Lab Coach |
-| Incident trace | Chờ challenge release và Langfuse credentials |
+| Incident trace | Chờ challenge CP3; trace phải nằm trong project Langfuse cá nhân |
 
 ## 3. Kết quả kỹ thuật
 
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
-| `validate_logs.py` | Chưa đo trước khi sửa | 100/100 | 46 bản ghi, 21 correlation IDs; không thiếu metadata, không phát hiện PII |
-| `validate_dashboard.py` | Chưa đo trước khi sửa | 6/6 panel | Dashboard contract hợp lệ |
-| `pytest` | Chưa đo trước khi sửa | 26 passed | Có test dashboard aggregation và cấu trúc child observation; chạy trên bản làm việc local |
-| Số traces hợp lệ | 0 | 0 | Chưa có Langfuse credentials; app chạy local ở chế độ tracing disabled |
+| `validate_logs.py` | Chưa đo trước khi sửa | 100/100 | 25 bản ghi, 12 correlation IDs; không thiếu metadata, không phát hiện PII |
+| `validate_dashboard.py` | Chưa đo trước khi sửa | 6/6 panel | Dashboard contract hợp lệ; runtime JSON và screenshot được lưu |
+| `pytest` | Chưa đo trước khi sửa | 26 passed | Chạy local trên commit hiện tại |
+| Số traces hợp lệ | Chưa có | 0 | Chưa tự tạo project/key Langfuse cá nhân; app đang tracing-disabled vì hai key trong `.env` đang trống |
 | Số PII leak | Chưa đo trước khi sửa | 0 | Validator không phát hiện PII trong log hiện tại |
-| Latency P95 / TTFT P95 | Chưa đo trước khi sửa | 162 ms / 55 ms | Mock workload, 23 request trong cửa sổ dashboard 60 phút |
-| Retrieval success rate | Chưa đo trước khi sửa | 100% | Mock workload; không đại diện dịch vụ thật |
+| Latency P95 / TTFT P95 | Chưa đo trước khi sửa | 162 ms / 55 ms | Mock practice snapshot với 23 requests; xem dashboard runtime JSON/screenshot |
+| Retrieval success rate | Chưa đo trước khi sửa | 100% | Mock practice workload; không đại diện dịch vụ thật |
 
 ## 4. Logging và PII
 
@@ -53,14 +53,14 @@
 
 ## 5. Tracing và prompt versioning
 
-- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** Chưa có trace vì chưa cấu hình API key cho project Langfuse cá nhân.
-- **Cấu trúc root/retrieval/generation observations:** Đã thêm child observation cho retriever và generation; test xác nhận quan hệ thao tác và generation nhận model, Langfuse prompt reference khi có, token usage và cost. Input/output chứa nội dung prompt/answer thô không được capture. Chưa xác minh waterfall live vì thiếu credentials.
+- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** Chưa có trace; hai key trong `.env` đang trống. Hướng dẫn yêu cầu mỗi học viên tự tạo project và key, không cần chờ Lab Coach.
+- **Cấu trúc root/retrieval/generation observations:** Đã thêm child observation cho retriever và generation; test xác nhận cấu trúc, model, prompt reference, token usage và cost. Input/output không ghi raw prompt/answer. Chưa xác minh waterfall live vì chưa cấu hình key project cá nhân.
 - **Cách nối trace với log:** Root trace metadata nhận correlation ID cùng feature/model; session ID được hash trước khi gắn vào trace.
 - **Prompt name:** `day13-chat` (cấu hình mặc định; chưa xác minh trên Langfuse project).
 - **Version/label baseline:** Chưa tạo trên Langfuse.
 - **Version/label candidate:** Chưa tạo trên Langfuse.
 - **Trace ID của mỗi version:** Chưa có.
-- **Cách promote và rollback `production`:** Chưa thực hiện; cần tự tạo project Langfuse cá nhân và cấu hình API key riêng.
+- **Cách promote và rollback `production`:** Chưa thực hiện; có thể làm sau khi tự tạo project Langfuse cá nhân và cấu hình API key riêng.
 
 ## 6. Dashboard, SLO và alerts
 
@@ -75,7 +75,7 @@
 - **Khoảng thời gian điều tra:** Chưa chạy challenge.
 - **Triệu chứng từ metrics:** Chưa có.
 - **Log line và correlation ID liên quan:** Chưa có.
-- **Trace ID và span gây ảnh hưởng:** Chưa có; cần Langfuse credentials.
+- **Trace ID và span gây ảnh hưởng:** Chưa có; chờ challenge chính thức và cần key project Langfuse cá nhân để tạo trace.
 - **Root cause:** Chưa kết luận.
 - **Fix action:** Chưa kết luận.
 - **Preventive measure:** Chưa kết luận.
@@ -88,7 +88,7 @@
 - **Cách hiểu luồng Metrics → Logs → Traces:** Metrics khoanh triệu chứng và thời gian; `correlation_id` tìm request trong log; trace của cùng ID chỉ ra span gây chậm/lỗi.
 - **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:** Chưa có evidence runtime cho prompt/rollback; phần config đã giữ lại correlation giữa version, usage/cost và request để truy nguyên khi Langfuse sẵn sàng.
 - **Điều quan trọng nhất đã học:** Chưa điền; học viên tự hoàn thiện sau khi làm challenge và demo.
-- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** Repo cá nhân đã được xác nhận; còn thiếu Langfuse API key cá nhân, prompt evidence và challenge chính thức; số liệu dashboard hiện tại chỉ từ fake LLM practice.
+- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** Cần tự tạo Langfuse project/key để thu trace và prompt evidence; CP3 chờ Lab Coach release challenge riêng. Số liệu dashboard hiện tại chỉ từ fake LLM practice.
 
 ## 9. Checklist trước khi nộp
 

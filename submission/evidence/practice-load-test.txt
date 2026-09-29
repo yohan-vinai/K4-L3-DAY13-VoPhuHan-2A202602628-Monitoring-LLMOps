@@ -1,10 +1,11 @@
-[200] req-beb84198 | qa | 509.7ms
-[200] req-3585b0f1 | summary | 509.6ms
-[200] req-d0e0d45c | qa | 510.1ms
-[200] req-1608e1e7 | qa | 484.7ms
-[200] req-6862ab5e | summary | 484.8ms
-[200] req-efdde02a | qa | 485.5ms
-[200] req-ade13c8b | qa | 491.9ms
-[200] req-42337446 | qa | 492.3ms
-[200] req-b586b855 | qa | 493.6ms
-[200] req-85a2bbbc | qa | 166.4ms
+Practice workload target: http://127.0.0.1:8001
+[200] req-a1f793ef | qa | 716.0ms
+[200] req-b51405c8 | qa | 886.9ms
+[200] req-9c56431a | summary | 887.1ms
+[200] req-9b2394a2 | qa | 887.5ms
+[200] req-710c6029 | qa | 888.7ms
+[200] req-c2c7e238 | summary | 335.4ms
+[200] req-92482b85 | qa | 803.3ms
+[200] req-c94ae931 | qa | 802.7ms
+[200] req-f52dc77c | qa | 804.4ms
+[200] req-875c6f33 | qa | 802.4ms

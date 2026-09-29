@@ -16,9 +16,7 @@ practice-load-test.txt
 request-id-headers.txt
 ```
 
-Trace, prompt-version/rollback và incident evidence vẫn cần Langfuse project/key
-cùng challenge release đúng lớp. Dashboard JSON và ảnh hiện tại chỉ phản ánh
-mock practice trong môi trường local.
+Trace và prompt-version/rollback evidence cần project/key Langfuse cá nhân do học viên tự tạo; không cần chờ Lab Coach cấp key. Incident evidence cần challenge release đúng lớp tại CP3. Dashboard JSON và ảnh phản ánh cùng một mock practice snapshot gồm 23 requests (2026-09-29 10:35 +07); load-test text và validators là lần chạy local sau đó.
 
 Các file chờ thu thập sau:
 

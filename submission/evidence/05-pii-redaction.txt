@@ -1,1 +1,7 @@
-Email [synthetic] [REDACTED_EMAIL]; phone [REDACTED_PHONE_VN]; CCCD [REDACTED_CCCD]; card [REDACTED_CREDIT_CARD]
+status=200
+request_id_header=req-130d13ac
+response_time_header_present=True
+response_correlation_id=req-130d13ac
+matching_log_records=2
+raw_canary_values_in_logs=False
+redaction_markers=['REDACTED_CCCD', 'REDACTED_CREDIT_CARD', 'REDACTED_EMAIL', 'REDACTED_PHONE_VN']

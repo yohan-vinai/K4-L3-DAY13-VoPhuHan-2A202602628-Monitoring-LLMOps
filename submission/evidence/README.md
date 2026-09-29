@@ -2,20 +2,32 @@
 
 Đặt ảnh hoặc output text dùng để chấm vào thư mục này. Danh sách đầy đủ xem tại [docs/SUBMISSION.md](../../docs/SUBMISSION.md).
 
-Tên file gợi ý:
+Evidence local hiện có:
 
 ```text
-01-pytest.png
-02-log-validator.png
-03-dashboard-validator.png
-04-structured-log.png
-05-pii-redaction.png
+01-pytest.txt
+02-log-validator.txt
+03-dashboard-validator.txt
+04-structured-log.txt
+05-pii-redaction.txt
+11-dashboard-overview.png
+11-dashboard-runtime.json
+practice-load-test.txt
+request-id-headers.txt
+```
+
+Trace, prompt-version/rollback và incident evidence vẫn cần Langfuse project/key
+cùng challenge release đúng lớp. Dashboard JSON và ảnh hiện tại chỉ phản ánh
+mock practice trong môi trường local.
+
+Các file chờ thu thập sau:
+
+```text
 06-trace-list.png
 07-trace-waterfall.png
 08-trace-metadata.png
 09-prompt-versions.png
 10-prompt-rollback.png
-11-dashboard-overview.png
 12-incident-metric.png
 13-incident-log.png
 14-incident-trace.png

@@ -4,10 +4,11 @@ import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
-from structlog.contextvars import bind_contextvars
+from fastapi.responses import HTMLResponse, JSONResponse
+from structlog.contextvars import bind_contextvars, clear_contextvars
 
 from .agent import LabAgent
+from .dashboard import dashboard_data, dashboard_html
 from .incidents import disable, enable, status
 from .logging_config import configure_logging, get_logger
 from .metrics import record_error, snapshot
@@ -46,17 +47,31 @@ async def metrics() -> dict:
     return snapshot()
 
 
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard() -> str:
+    return dashboard_html()
+
+
+@app.get("/dashboard/data")
+async def dashboard_metrics() -> dict:
+    return dashboard_data()
+
+
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: Request, body: ChatRequest) -> ChatResponse:
-    # TODO: Enrich logs with request context (user_id_hash, session_id, feature, model, env)
-    # bind_contextvars(...)
-    
-    log.info(
-        "request_received",
-        service="api",
-        payload={"message_preview": summarize_text(body.message)},
+    bind_contextvars(
+        user_id_hash=hash_user_id(body.user_id),
+        session_id=body.session_id,
+        feature=body.feature,
+        model=agent.model,
+        env=os.getenv("APP_ENV", "dev"),
     )
     try:
+        log.info(
+            "request_received",
+            service="api",
+            payload={"message_preview": summarize_text(body.message)},
+        )
         result = agent.run(
             user_id=body.user_id,
             feature=body.feature,
@@ -99,6 +114,8 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
             payload={"detail": str(exc), "message_preview": summarize_text(body.message)},
         )
         raise HTTPException(status_code=500, detail=error_type) from exc
+    finally:
+        clear_contextvars()
 
 
 @app.post("/incidents/{name}/enable")

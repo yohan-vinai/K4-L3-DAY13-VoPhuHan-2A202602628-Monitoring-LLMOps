@@ -1,5 +1,5 @@
 Langfuse API verification (API keys omitted)
-Project: My Project (cmumds53i1563ad0c57povhmp)
+Project: day13-k4-l3a-2A202602628 (cmumds53i1563ad0c57povhmp; confirmed in Langfuse UI)
 Prompt: day13-chat (text)
 Version 1 labels: baseline, production
 Version 2 labels: candidate, latest

@@ -4,7 +4,7 @@
 
 ## 1. Thông tin học viên
 
-- **Họ và tên:** VoPhuHan
+- **Họ và tên:** Võ Phú Hãn
 - **MSSV:** 2A202602628
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/yohan-vinai/K4-L3A-Day13-Monitoring-LLMOps
@@ -22,7 +22,12 @@
 | Dashboard validator | `evidence/03-dashboard-validator.txt` |
 | Structured log | `evidence/04-structured-log.txt` |
 | PII redaction | `evidence/05-pii-redaction.txt` |
-| Trace list, waterfall, metadata, correlation IDs, prompt versions/rollback | `evidence/06-langfuse-traces.txt` (Langfuse API readback; UI screenshots cần chụp riêng) |
+| Langfuse trace list | `evidence/06-trace-list.jpg` |
+| Langfuse trace waterfall | `evidence/07-trace-waterfall.jpg` |
+| Langfuse trace metadata/correlation ID | `evidence/08-trace-metadata.jpg` |
+| Prompt versions | `evidence/09-prompt-versions.jpg` |
+| Prompt production rollback | `evidence/10-prompt-rollback.jpg` |
+| Langfuse API readback, trace IDs and PII scan | `evidence/06-langfuse-traces.txt` |
 | Dashboard runtime | `evidence/11-dashboard-overview.png` |
 | Incident metric | Chờ challenge release của Lab Coach |
 | Incident log | Chờ challenge release của Lab Coach |
@@ -49,7 +54,7 @@
 
 ## 5. Tracing và prompt versioning
 
-- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** `.env` có key pair; Langfuse API xác nhận 12 traces trong project đang được key sử dụng. Project hiện có tên `My Project`; nên đổi tên trong Langfuse UI thành `day13-k4-l3a-2A202602628` theo quy ước của lab.
+- **Cách xác nhận traces do chính tôi tạo trong project cá nhân:** `.env` có key pair; Langfuse API xác nhận 12 traces trong project đang được key sử dụng. Langfuse UI xác nhận tên project là `day13-k4-l3a-2A202602628`; trace list và prompt UI screenshots nằm trong `evidence/06`–`10`.
 - **Cấu trúc root/retrieval/generation observations:** Đã kiểm tra waterfall live: `lab-agent-run` có hai child `knowledge-retrieval` và `chat-completion`. Root input/output không được capture; child input/output đã rà PII với 0 mẫu khớp email/điện thoại/CCCD/thẻ.
 - **Cách nối trace với log:** Correlation ID cùng feature/model xuất hiện trong metadata trace và structured log; session ID được hash trước khi gắn vào trace. Bảng ID nằm trong `evidence/06-langfuse-traces.txt`.
 - **Prompt name:** `day13-chat`, đọc thành công từ Langfuse project.
@@ -84,14 +89,14 @@
 - **Cách hiểu luồng Metrics → Logs → Traces:** Metrics khoanh triệu chứng và thời gian; `correlation_id` tìm request trong log; trace của cùng ID chỉ ra span gây chậm/lỗi.
 - **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:** Trace phân biệt được prompt version 1/2 và correlation ID; token/cost được ghi theo generation. Rollback production về version 1 đã được đọc lại từ API.
 - **Điều quan trọng nhất đã học:** Tracing phải vừa nối được với log vừa tránh capture nội dung user; prompt label có thể promote/rollback độc lập với code và cần có trace xác nhận version thực dùng.
-- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** CP3 chưa thể chạy vì challenge chính thức đúng lớp chưa release. Cần chụp các ảnh UI Langfuse theo rubric; API evidence hiện có trong `evidence/06-langfuse-traces.txt`. Số liệu dashboard hiện tại chỉ từ fake LLM practice.
+- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** CP3 incident challenge chưa chạy vì repository hướng dẫn chỉ chạy challenge sau khi nhận file `config/challenge.json` riêng cho lớp từ Lab Coach; không tự tạo hoặc dùng file lớp khác. Langfuse UI screenshots đã lưu trong `evidence/06`–`10`. Số liệu dashboard hiện tại chỉ từ fake LLM practice.
 
 ## 9. Checklist trước khi nộp
 
 - [ ] Kết quả và evidence thuộc commit SHA cuối.
 - [ ] Tất cả ảnh/output mở được bằng đường dẫn tương đối.
 - [ ] Incident evidence nối đúng metric → log → trace (chờ challenge CP3).
-- [ ] Trace/prompt evidence thuộc project Langfuse cá nhân; API evidence đã lưu, UI screenshots còn thiếu và phải không lộ key/secret.
+- [x] Trace/prompt evidence thuộc project Langfuse cá nhân; API evidence và UI screenshots đã lưu, không chụp API key/secret.
 - [ ] Repository chạy lại được theo README.
 - [ ] Không có secret, API key, PII thô hoặc evidence của người khác/lớp khác.
 - [ ] URL repo và commit SHA cuối đã được nộp trên LMS/Codelabs.
